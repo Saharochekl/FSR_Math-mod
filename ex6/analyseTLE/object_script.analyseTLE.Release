@@ -1,0 +1,10 @@
+release/main.o
+release/mainwindow.o
+release/qcustomplot.o
+release/gravitymodel.o
+release/model.o
+release/odemodel.o
+release/reactionmodel.o
+release/sqpmodel.o
+release/moc_mainwindow.o
+release/moc_qcustomplot.o

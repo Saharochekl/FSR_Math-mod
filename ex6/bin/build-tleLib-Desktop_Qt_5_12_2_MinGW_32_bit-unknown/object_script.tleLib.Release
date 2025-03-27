@@ -1,0 +1,16 @@
+release/tleLib.o
+release/cEci.o
+release/cJulian.o
+release/coord.o
+release/cSite.o
+release/cTLE.o
+release/cVector.o
+release/globals.o
+release/stdafx.o
+release/cNoradBase.o
+release/cNoradSDP4.o
+release/cNoradSGP4.o
+release/cOrbit.o
+release/cSatellite.o
+release/stdafx.o
+release/tleparser.o

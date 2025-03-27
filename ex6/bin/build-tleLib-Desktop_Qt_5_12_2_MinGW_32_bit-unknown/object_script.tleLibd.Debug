@@ -1,0 +1,16 @@
+debug/tleLib.o
+debug/cEci.o
+debug/cJulian.o
+debug/coord.o
+debug/cSite.o
+debug/cTLE.o
+debug/cVector.o
+debug/globals.o
+debug/stdafx.o
+debug/cNoradBase.o
+debug/cNoradSDP4.o
+debug/cNoradSGP4.o
+debug/cOrbit.o
+debug/cSatellite.o
+debug/stdafx.o
+debug/tleparser.o

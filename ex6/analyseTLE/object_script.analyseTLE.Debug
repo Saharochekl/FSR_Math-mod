@@ -1,0 +1,10 @@
+debug/main.o
+debug/mainwindow.o
+debug/qcustomplot.o
+debug/gravitymodel.o
+debug/model.o
+debug/odemodel.o
+debug/reactionmodel.o
+debug/sqpmodel.o
+debug/moc_mainwindow.o
+debug/moc_qcustomplot.o
