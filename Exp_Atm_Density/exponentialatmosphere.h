@@ -20,7 +20,7 @@ private:
     void SetConstants();
     int FindBand(double height) const;
 
-    TemperatureProfile* mTempProfile;  ///< Указатель на профиль температуры (может быть nullptr).
+    TemperatureProfile* mTempProfile;
     int mAltitudeBands;
     double* mRefHeight;
     double* mRefDensity;
