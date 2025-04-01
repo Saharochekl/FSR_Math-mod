@@ -1,4 +1,5 @@
 #include "exponentialatmosphere.h"
+#include "atmosphereconst.h"
 #include <stdexcept>
 
 
@@ -11,8 +12,9 @@ ExponentialAtmosphere::ExponentialAtmosphere(double baseDensity, double basePres
     mRefDensity(nullptr),
     mScaleHeight(nullptr)
 {
-    SetConstants();
+    AtmosphereConstants::SetConstants(mAltitudeBands, mRefHeight, mRefDensity, mScaleHeight);
 }
+
 
 
 ExponentialAtmosphere::ExponentialAtmosphere(double baseDensity, double basePressure, double gravity)
@@ -23,7 +25,7 @@ ExponentialAtmosphere::ExponentialAtmosphere(double baseDensity, double basePres
     mRefDensity(nullptr),
     mScaleHeight(nullptr)
 {
-    SetConstants();
+    AtmosphereConstants::SetConstants(mAltitudeBands, mRefHeight, mRefDensity, mScaleHeight);
 }
 
 
@@ -37,7 +39,7 @@ ExponentialAtmosphere::~ExponentialAtmosphere()
 /**
  * @brief Заполняет массивы константами (как в Vallado)
  */
-void ExponentialAtmosphere::SetConstants()
+/*void ExponentialAtmosphere::SetConstants()
 {
     mRefHeight   = new double[mAltitudeBands];
     mRefDensity  = new double[mAltitudeBands];
@@ -72,7 +74,7 @@ void ExponentialAtmosphere::SetConstants()
     mRefHeight[25]   = 800.0;  mRefDensity[25]  = 1.170e-14;   mScaleHeight[25] = 124.64;
     mRefHeight[26]   = 900.0;  mRefDensity[26]  = 5.245e-15;   mScaleHeight[26] = 181.05;
     mRefHeight[27]   = 1000.0; mRefDensity[27]  = 3.019e-15;   mScaleHeight[27] = 268.00;
-}
+}*/
 
 
 int ExponentialAtmosphere::FindBand(double height) const

@@ -10,6 +10,8 @@ CONFIG += c++17
 
 SOURCES += \
     atmosphere.cpp \
+    atmosphereconst.cpp \
+    dynamic_atmosphere.cpp \
     exponentialatmosphere.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -17,6 +19,8 @@ SOURCES += \
 
 HEADERS += \
     atmosphere.h \
+    atmosphereconst.h \
+    dynamic_atmosphere.h \
     exponentialatmosphere.h \
     mainwindow.h \
     temperatureprofile.h

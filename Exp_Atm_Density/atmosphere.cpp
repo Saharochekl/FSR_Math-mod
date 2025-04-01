@@ -9,5 +9,4 @@ Atmosphere::Atmosphere(double baseDensity, double basePressure, double gravity)
 
 Atmosphere::~Atmosphere()
 {
-    // Если нужны какие-то действия при удалении, можно добавить здесь.
 }
