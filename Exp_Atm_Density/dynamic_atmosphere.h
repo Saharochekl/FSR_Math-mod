@@ -5,6 +5,21 @@
 #include "temperatureprofile.h"
 #include <cmath>
 #include <stdexcept>
+#include <ctime>
+#include <iomanip>
+
+
+struct UTC_time{
+    double time_h, time_m, time_s;
+    int year, month, day;
+
+};
+UTC_time convertUtcToLocalSolarTime(const std::time_t utcTime, double longitude);
+
+
+struct coordinates{
+    long double attitude, latitude, longitude;
+};
 
 class DynamicAtmosphere : public Atmosphere
 {
@@ -27,9 +42,11 @@ public:
     /**
      * Возвращает плотность для заданной высоты (в метрах) и времени.
      * Параметр time не используется.
+     *
      */
+    double getSOD(double time_h, double time_m, double time_s);
     long double getDensity(double altitude, double time) const override;
-
+    coordinates CalculateGeodetics(const double* position, UTC_time time);
 private:
     int FindBand(double height) const;
 
@@ -37,10 +54,13 @@ private:
     double mF107;
     double mF107A;
 
+
     int mAltitudeBands;
     double* mRefHeight;
     double* mRefDensity;
     double* mScaleHeight;
 };
+
+long double utcToJulianDate(const UTC_time& utc);
 
 #endif // DYNAMICATMOSPHERE_H
