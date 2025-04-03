@@ -45,8 +45,8 @@ public:
      *
      */
     double getSOD(double time_h, double time_m, double time_s);
-    long double getDensity(double altitude, double time) const override;
-    coordinates CalculateGeodetics(const double* position, UTC_time time);
+    long double getDensity(const double* j2000, const UTC_time utc) const ;
+    coordinates CalculateGeodetics(const double* position, const UTC_time time) const;
 private:
     int FindBand(double height) const;
 

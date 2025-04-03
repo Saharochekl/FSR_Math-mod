@@ -25,6 +25,7 @@ HEADERS += \
     dynamic_atmosphere.h \
     exponentialatmosphere.h \
     mainwindow.h \
+    msise90_sub.h \
     temperatureprofile.h
 
 FORMS += \

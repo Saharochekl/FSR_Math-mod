@@ -1,5 +1,7 @@
 #include "dynamic_atmosphere.h"
 #include "atmosphereconst.h"
+#include "msise90_sub.h"
+
 
 DynamicAtmosphere::DynamicAtmosphere(double baseDensity, double basePressure, double gravity,
                                      TemperatureProfile* tempProfile,
@@ -37,34 +39,65 @@ int DynamicAtmosphere::FindBand(double height) const
     return index;
 }
 
-long double DynamicAtmosphere::getDensity(double altitude, double /*time*/) const
+long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time utc) const
 {
-    if (altitude < 0.0)
-        throw std::runtime_error("Altitude is below zero");
+    coordinates geo = CalculateGeodetics(j2000, utc);
 
-    // Переводим высоту из метров в км
-    double alt_km = altitude / 1000.0;
+    long double JD = utcToJulianDate(utc);
 
-    int band = FindBand(alt_km);
-    // Базовая плотность по экспоненциальной модели
-    double baseDensityValue = mRefDensity[band] * std::exp( -(alt_km - mRefHeight[band]) / mScaleHeight[band] );
+    double GMST_deg = fmod(280.46061837 + 360.98564736629 * (JD - 2451545.0), 360.0);
+    if (GMST_deg < 0)
+        GMST_deg += 360.0;
+    float GMST_rad = static_cast<float>(GMST_deg * M_PI / 180.0);
 
-    // Вычисляем динамический корректирующий множитель.
-    // Используем среднее значение F10.7: (mF107 + mF107A)/2.
-    // Номинальное значение можно принять равным, например, 150 sfu.
-    double nominal = 150.0;
-    double averageF107 = (mF107 + mF107A) / 2.0;
-    double k = 0.01; // коэффициент чувствительности (подбирается экспериментально)
+    // Вычисляем количество секунд с начала суток
+    double sod = utc.time_h * 3600 + utc.time_m * 60 + utc.time_s;
+    float xsod = static_cast<float>(sod);
 
-    double correctionFactor = 1.0 + k * (averageF107 - nominal) / nominal;
+    // В модели MSIS высота должна быть в километрах.
+    float xalt = static_cast<float>(geo.attitude);
+    // Используем геодезические координаты, полученные из CalculateGeodetics.
+    float xlat = static_cast<float>(geo.latitude);
+    float xlon = static_cast<float>(geo.longitude);
+    // Вычисляем локальное солнечное время (LST) – примитивно: LST = (sod/3600 + долгота/15) (в часах)
+    float xlst = fmod(xsod / 3600.0f + xlon / 15.0f, 24.0f);
 
-    return baseDensityValue * correctionFactor;
+    // Создаем комбинированное значение "год и день" (формат YYDDD или год*1000+день)
+    int xyd = utc.year * 1000 + utc.day;
+
+    // Подготавливаем параметры для вызова gtd6_ (функция из MSIS90)
+    float xf107  = static_cast<float>(mF107);
+    float xf107a = static_cast<float>(mF107A);
+    // Здесь, как типичный пациент, мы задаем номинальные значения геомагнитных индексов (например, 15)
+    float xap[7] = {15.0f, 15.0f, 15.0f, 15.0f, 15.0f, 15.0f, 15.0f};
+    int xmass = 48;  // масса = 48 для "всей" атмосферы
+
+    // Массивы для результатов от gtd6_
+    float xden[8] = {0.0f};
+    float xtemp[2] = {0.0f};
+
+// Вызываем MSIS90-функцию gtd6_
+#ifdef USE_64_BIT_LONGS
+    long int xydLong = static_cast<long int>(xyd);
+    long int xmassLong = static_cast<long int>(xmass);
+    gtd6_(&xydLong, &xsod, &xalt, &xlat, &xlon, &xlst, &xf107a, &xf107,
+          &xap[0], &xmassLong, &xden[0], &xtemp[0]);
+#else
+    gtd6_(&xyd, &xsod, &xalt, &xlat, &xlon, &xlst, &xf107a, &xf107,
+          &xap[0], &xmass, &xden[0], &xtemp[0]);
+#endif
+
+    // Согласно стандарту MSIS90 общая масса плотности хранится в xden[5].
+    // Обычно эта величина дана в г/см³, поэтому для перевода в кг/м³ умножаем на 1000.
+    long double density = xden[5] * 1000.0;
+    return density;
+
 }
 
 
 // Функция, рассчитывающая геодезические координаты по заданной позиции (в км)
 // Используются параметры WGS84 для Земли.
-coordinates DynamicAtmosphere::CalculateGeodetics(const double* j2000, UTC_time time)
+coordinates DynamicAtmosphere::CalculateGeodetics(const double* j2000, const UTC_time time) const
 {
 
     // Преобразуем время: вычисляем GMST в градусах по формуле:
