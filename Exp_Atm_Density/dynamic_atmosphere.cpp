@@ -90,8 +90,6 @@ coordinates DynamicAtmosphere::CalculateGeodetics(const double* j2000, UTC_time 
     const double f = 1.0 / 298.257223563;           // сжатие
     const double ecc2 = 2 * f - f * f;              // квадрат эксцентриситета
 
-    // Извлекаем координаты (предполагаем, что они в ECEF, в км)
-
 
     // Расчет расстояния проекции на экваториальную плоскость
     double rxy = sqrt(x_ecef * x_ecef + y_ecef * y_ecef);

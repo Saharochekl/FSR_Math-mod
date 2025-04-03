@@ -15,7 +15,9 @@ SOURCES += \
     exponentialatmosphere.cpp \
     main.cpp \
     mainwindow.cpp \
-    temperatureprofile.cpp
+    temperatureprofile.cpp \
+    msise90_sub.c
+
 
 HEADERS += \
     atmosphere.h \
@@ -27,6 +29,11 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui
+
+INCLUDEPATH += /usr/local/include
+
+LIBS += -L/usr/local/lib -lf2c -lm
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
