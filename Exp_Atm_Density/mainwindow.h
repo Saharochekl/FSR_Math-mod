@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "exponentialatmosphere.h"
 #include "temperatureprofile.h"
+#include "dynamic_atmosphere.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,12 +19,13 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_CalcButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     TemperatureProfile *mTempProfile;
-    ExponentialAtmosphere *mAtmModel;
+    ExponentialAtmosphere *mStaticModel;
+    DynamicAtmosphere *dynamicModel;
 };
 
 #endif // MAINWINDOW_H

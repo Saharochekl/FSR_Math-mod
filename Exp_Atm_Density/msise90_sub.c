@@ -14,6 +14,13 @@
 
 /* Common Block Declarations */
 
+// Определения глобальных переменных
+float sod   = 0.0f;
+int   yd    = 0;
+float f107  = 150.0f;
+float f107a = 150.0f;
+float ap[7] = {15.0f,15.0f,15.0f,15.0f,15.0f,15.0f,15.0f};
+
 struct {
     real tlb, s, db04, db16, db28, db32, db40, db48, db01, za, t0, z0, g0, rl,
 	     dd, db14, tr12;
@@ -561,10 +568,10 @@ static integer c__4 = 4;
 {
     /* Initialized data */
 
-    static integer mn3 = 5;
-    static real zn3[5] = { 32.5f,20.f,15.f,10.f,0.f };
+    static real zn2[5] = { 0.f, 72.5f, 55.f, 45.f, 32.5f };
     static integer mn2 = 4;
-    static real zn2[4] = { 72.5f,55.f,45.f,32.5f };
+    static real zn3[6] = { 0.f, 120.f, 110.f, 100.f, 90.f, 72.5f };
+    static integer mn3 = 5;
     static real zmix = 62.5f;
     static real alast = 99999.f;
     static integer mssl = -999;
