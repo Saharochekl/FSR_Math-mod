@@ -11,6 +11,7 @@
 */
 
 #include "f2c.h"
+#include <stdio.h>
 
 /* Common Block Declarations */
 
@@ -567,10 +568,11 @@ static integer c__4 = 4;
 	mass, real *d__, real *t)
 {
     /* Initialized data */
+    printf("DEBUG: In gtd6_, *mass = %ld\n", (long)*mass);
 
-    static real zn2[5] = { 0.f, 72.5f, 55.f, 45.f, 32.5f };
+    static real zn2[4] = { 72.5f, 55.f, 45.f, 32.5f };
     static integer mn2 = 4;
-    static real zn3[6] = { 0.f, 120.f, 110.f, 100.f, 90.f, 72.5f };
+    static real zn3[5] = { 32.5f, 20.f, 15.f, 10.f, 0.f };
     static integer mn3 = 5;
     static real zmix = 62.5f;
     static real alast = 99999.f;
@@ -701,6 +703,8 @@ static integer c__4 = 4;
 
 /*       THERMOSPHERE/UPPER MESOSPHERE [above ZN2(1)] */
     altt = dmax(*alt,zn2[0]);
+    printf("[DEBUG] gtd6_: altt = %f (alt = %f, zn2[0] = %f)\n", altt, *alt, zn2[0]);
+
     mss = *mass;
 /* e       Only calculate N2 in thermosphere if alt in mixed region */
     if (*alt < zmix && *mass > 0) {
@@ -2505,6 +2509,8 @@ L20:
     x = zg / zgdif;
     splint_(xs, ys, y2out, &mn, &x, &y);
 /*       temperature at altitude */
+    printf("splint_: x = %f, interpolated y = %f, resulting tz = %f\n", x, y, 1.0f/y);
+
     *tz = 1.f / y;
     if (*xm == 0.f) {
 	goto L30;

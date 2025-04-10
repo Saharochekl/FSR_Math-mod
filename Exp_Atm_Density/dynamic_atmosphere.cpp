@@ -101,11 +101,18 @@ long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time ut
     float xf107a = static_cast<float>(mF107A);
     // Здесь, как типичный пациент, мы задаем номинальные значения геомагнитных индексов (например, 15)
     float xap[7] = {15.0f, 15.2f, 15.7f, 15.5f, 15.3f, 15.0f, 15.1f};
-    int xmass = 42;  // масса = 48 для "всей" атмосферы
+    integer xmass = 48;  // масса = 48 для "всей" атмосферы
 
     // Массивы для результатов от gtd6_
-    float xden[8] = {0.0f};
-    float xtemp[2] = {0.0f};
+    float xden[8];
+    for (int j = 0; j < 8; j++)
+    {
+        xden[j] = (float)0;
+    }
+    float xtemp[2];
+    for(int j = 0; j<2; ++j){
+        xtemp[j] = (float) 0;
+    }
 
     extern float sod;    // количество секунд от начала суток
     extern int yd;       // год и день в формате YYDDD
@@ -144,8 +151,8 @@ long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time ut
     logFile << "EXOSPHERIC Temperature = " << xtemp[0] << "\n";
     logFile << "Temperature at Alt     = " << xtemp[1] << "\n\n";
 
-    gtd6_(&xyd,&xsod,&xalt,&xlat,&xlon,&xlst,&xf107a,&xf107,&xap[0],&xmass,
-          &xden[0],&xtemp[0]);
+    int res = gtd6_(&xyd,&xsod,&xalt,&xlat,&xlon,&xlst,&xf107a,&xf107,xap,&xmass,
+          xden,xtemp);
 
 
 
@@ -175,6 +182,7 @@ long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time ut
         logFile << "Density[" << i << "]      = " << xden[i] << "\n";
     }
     logFile << "EXOSPHERIC Temperature = " << xtemp[0] << "\n";
+    logFile << "result of gtd6_ func_work = " << res << "\n";
     logFile << "Temperature at Alt     = " << xtemp[1] << "\n\n";
     logFile.flush();
 
