@@ -129,7 +129,7 @@ long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time ut
     {
         ap[i] = xap[i];
     }
-    std::ofstream logFile ("/Users/zuha/Desktop/FKI/3 курс 2023-2025/6 семестр 2025/Матмод/Lololologer.log");
+    std::ofstream logFile ("../../../../logs_of_gtd6_.log");
     logFile << "Before-GTDS6()\n";
     logFile << "===========\n";
     logFile << "Epoch                  = " << JD << "\n";
