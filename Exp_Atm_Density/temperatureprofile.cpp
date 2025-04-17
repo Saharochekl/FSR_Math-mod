@@ -7,7 +7,6 @@ TemperatureProfile::TemperatureProfile()
 
 double TemperatureProfile::getTemperature(double altitude) const
 {
-    // Преобразуем высоту из метров в километры
     double alt_km = altitude / 1000.0;
 
     if (alt_km < 0.0)

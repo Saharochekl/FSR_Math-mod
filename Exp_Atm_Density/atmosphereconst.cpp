@@ -6,12 +6,11 @@ namespace AtmosphereConstants
 {
 void SetConstants(int altitudeBands, double*& refHeight, double*& refDensity, double*& scaleHeight)
 {
-    // Выделяем память для массивов
     refHeight  = new double[altitudeBands];
     refDensity = new double[altitudeBands];
     scaleHeight = new double[altitudeBands];
 
-    // Заполняем массивы (данные из Vallado)
+    // Vallado dataSet
     refHeight[0]    = 0.0;    refDensity[0]   = 1.225;       scaleHeight[0]  = 7.249;
     refHeight[1]    = 25.0;   refDensity[1]   = 3.899e-2;    scaleHeight[1]  = 6.349;
     refHeight[2]    = 30.0;   refDensity[2]   = 1.774e-2;    scaleHeight[2]  = 6.682;
