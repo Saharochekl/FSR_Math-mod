@@ -3,6 +3,9 @@
 #include "msise90_sub.h"
 #include <fstream>
 #include <iostream>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
 
 #include <err.h>
 
@@ -99,7 +102,7 @@ long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time ut
     // Подготавливаем параметры для вызова gtd6_ (функция из MSIS90)
     float xf107  = static_cast<float>(mF107);
     float xf107a = static_cast<float>(mF107A);
-    // Здесь, как типичный пациент, мы задаем номинальные значения геомагнитных индексов (например, 15)
+    // Задаем номинальные значения геомагнитных индексов (например, 15)
     float xap[7] = {15.0f, 15.2f, 15.7f, 15.5f, 15.3f, 15.0f, 15.1f};
     integer xmass = 48;  // масса = 48 для "всей" атмосферы
 
@@ -159,6 +162,12 @@ long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time ut
 
     //FILE* logFile = fopen("logfile.log"<< r+);
     //std::ofstream logFile ("/Users/zuha/Desktop/FKI/3 курс 2023-2025/6 семестр 2025/Матмод/Lololologer.log");
+
+
+
+
+
+
     if (!logFile.is_open()) {
         std::cerr << "Ошибка открытия файла logs.log!" << std::endl;
     }
@@ -189,6 +198,69 @@ long double DynamicAtmosphere::getDensity(const double* j2000, const UTC_time ut
 
     // Согласно стандарту MSIS90 общая масса плотности хранится в xden[5].
     long double density = xden[5] * 1000.0;
+
+
+
+
+
+
+    auto isLeap = [](int y) {
+        return (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0));
+    };
+
+    int   curYear = utc.year;
+    int   curYday = day_of_year;
+    float curSod  = xsod;
+
+
+    std::tm tm_start{};
+    tm_start.tm_year = utc.year  - 1900;
+    tm_start.tm_mon  = utc.month - 1;
+    tm_start.tm_mday = utc.day;
+    tm_start.tm_hour = utc.time_h;
+    tm_start.tm_min  = utc.time_m;
+    tm_start.tm_sec  = utc.time_s;
+    tm_start.tm_isdst = 0;
+
+    std::time_t tIter = timegm(&tm_start);
+
+
+
+    for (int h = 1; h <= 24; ++h)
+    {
+        tIter += 3600;                                   // +1 час
+        std::tm *tmUtc = gmtime(&tIter);                 // разбираем
+
+        // пересчитываем yday, sod, year  -------------------------------
+        curYear = tmUtc->tm_year + 1900;
+        curYday = tmUtc->tm_yday + 1;                    // 1-based
+        curSod  = static_cast<float>(tmUtc->tm_hour * 3600 +
+                                    tmUtc->tm_min  * 60   +
+                                    tmUtc->tm_sec);
+
+        xsod = curSod;
+        sod  = curSod;
+        xyd  = curYear * 1000 + curYday;
+        yd   = xyd;
+        xlst = fmod(xsod / 3600.0f + xlon / 15.0f, 24.0f);
+
+
+        int res_iter = gtd6_(&xyd,&xsod,&xalt,&xlat,&xlon,&xlst,
+                             &xf107a,&xf107,xap,&xmass,xden,xtemp);
+
+        char utcBuf[20];   // «YYYY-MM-DD HH:MM:SS» → 19 симв. + 0
+        std::strftime(utcBuf, sizeof(utcBuf),
+                      "%Y-%m-%d %H:%M:%S", tmUtc);
+
+        logFile << "=== +" << h << " h =====================\n";
+        logFile << "YYDDD = "   << xyd   << '\n';
+        logFile << "SOD   = "   << xsod  << '\n';
+        logFile << "UTC   = "   << utcBuf  << '\n';
+        logFile << "ρ_tot = "   << (xden[5] * 1000.0) << " kg/m^3\n";
+            logFile << "T_exo = "   << xtemp[0] << " K\n";
+        logFile << "ret   = "   << res_iter << "\n\n";
+    }
+    logFile.flush();
     return density;
 
 }

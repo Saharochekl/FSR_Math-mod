@@ -1,14 +1,14 @@
 Before-GTDS6()
 ===========
-Epoch                  = 2.46078e+06
-Year & Days            = 2025102
-Seconds                = 49311
-Altitude               = 151.323
-Latitude               = 17.831
-Longitude              = 105.724
-Solar Time             = 20.7457
+Epoch                  = 2.4608e+06
+Year & Days            = 2025126
+Seconds                = 47214
+Altitude               = 682.229
+Latitude               = 45
+Longitude              = -8.23898
+Solar Time             = 12.5657
 F107 Average           = 153
-F107                   = 150
+F107                   = 147
 Geomagnetic index[0]   = 15
 Geomagnetic index[1]   = 15.2
 Geomagnetic index[2]   = 15.7
@@ -30,15 +30,15 @@ Temperature at Alt     = 0
 
 Post-GTDS6()
 ===========
-Epoch                  = 2.46078e+06
-Year & Days            = 2025102
-Seconds                = 49311
-Altitude               = 151.323
-Latitude               = 17.831
-Longitude              = 105.724
-Solar Time             = 20.7457
+Epoch                  = 2.4608e+06
+Year & Days            = 2025126
+Seconds                = 47214
+Altitude               = 682.229
+Latitude               = 45
+Longitude              = -8.23898
+Solar Time             = 12.5657
 F107 Average           = 153
-F107                   = 150
+F107                   = 147
 Geomagnetic index[0]   = 15
 Geomagnetic index[1]   = 15.2
 Geomagnetic index[2]   = 15.7
@@ -47,15 +47,207 @@ Geomagnetic index[4]   = 15.3
 Geomagnetic index[5]   = 15
 Geomagnetic index[6]   = 15.1
 Mass                   = 48
-Density[0]      = 6.24199e+06
-Density[1]      = 1.29048e+10
-Density[2]      = 2.61353e+10
-Density[3]      = 1.87323e+09
-Density[4]      = 5.57651e+07
-Density[5]      = 1.66109e-12
-Density[6]      = 357394
-Density[7]      = 1.366e+07
-EXOSPHERIC Temperature = 1016.64
+Density[0]      = 1.59669e+06
+Density[1]      = 5.4158e+06
+Density[2]      = 30980.7
+Density[3]      = 375.415
+Density[4]      = 0.223645
+Density[5]      = 1.61471e-16
+Density[6]      = 42965.3
+Density[7]      = 236419
+EXOSPHERIC Temperature = 1209.94
 result of gtd6_ func_work = 0
-Temperature at Alt     = 715.43
+Temperature at Alt     = 1209.92
+
+=== +1 h =====================
+YYDDD = 2025126
+SOD   = 50814
+UTC   = 2025-05-06 14:06:54
+ρ_tot = 1.66521e-13 kg/m^3
+T_exo = 1225.09 K
+ret   = 0
+
+=== +2 h =====================
+YYDDD = 2025126
+SOD   = 54414
+UTC   = 2025-05-06 15:06:54
+ρ_tot = 1.66494e-13 kg/m^3
+T_exo = 1239.82 K
+ret   = 0
+
+=== +3 h =====================
+YYDDD = 2025126
+SOD   = 58014
+UTC   = 2025-05-06 16:06:54
+ρ_tot = 1.61109e-13 kg/m^3
+T_exo = 1251.01 K
+ret   = 0
+
+=== +4 h =====================
+YYDDD = 2025126
+SOD   = 61614
+UTC   = 2025-05-06 17:06:54
+ρ_tot = 1.51116e-13 kg/m^3
+T_exo = 1253.65 K
+ret   = 0
+
+=== +5 h =====================
+YYDDD = 2025126
+SOD   = 65214
+UTC   = 2025-05-06 18:06:54
+ρ_tot = 1.38137e-13 kg/m^3
+T_exo = 1243.07 K
+ret   = 0
+
+=== +6 h =====================
+YYDDD = 2025126
+SOD   = 68814
+UTC   = 2025-05-06 19:06:54
+ρ_tot = 1.23269e-13 kg/m^3
+T_exo = 1217.56 K
+ret   = 0
+
+=== +7 h =====================
+YYDDD = 2025126
+SOD   = 72414
+UTC   = 2025-05-06 20:06:54
+ρ_tot = 1.06772e-13 kg/m^3
+T_exo = 1179.81 K
+ret   = 0
+
+=== +8 h =====================
+YYDDD = 2025126
+SOD   = 76014
+UTC   = 2025-05-06 21:06:54
+ρ_tot = 8.95278e-14 kg/m^3
+T_exo = 1136.42 K
+ret   = 0
+
+=== +9 h =====================
+YYDDD = 2025126
+SOD   = 79614
+UTC   = 2025-05-06 22:06:54
+ρ_tot = 7.37158e-14 kg/m^3
+T_exo = 1095.59 K
+ret   = 0
+
+=== +10 h =====================
+YYDDD = 2025126
+SOD   = 83214
+UTC   = 2025-05-06 23:06:54
+ρ_tot = 6.14114e-14 kg/m^3
+T_exo = 1064.11 K
+ret   = 0
+
+=== +11 h =====================
+YYDDD = 2025127
+SOD   = 414
+UTC   = 2025-05-07 00:06:54
+ρ_tot = 5.32537e-14 kg/m^3
+T_exo = 1045.08 K
+ret   = 0
+
+=== +12 h =====================
+YYDDD = 2025127
+SOD   = 4014
+UTC   = 2025-05-07 01:06:54
+ρ_tot = 4.86412e-14 kg/m^3
+T_exo = 1037.55 K
+ret   = 0
+
+=== +13 h =====================
+YYDDD = 2025127
+SOD   = 7614
+UTC   = 2025-05-07 02:06:54
+ρ_tot = 4.66102e-14 kg/m^3
+T_exo = 1037.95 K
+ret   = 0
+
+=== +14 h =====================
+YYDDD = 2025127
+SOD   = 11214
+UTC   = 2025-05-07 03:06:54
+ρ_tot = 4.64724e-14 kg/m^3
+T_exo = 1042.49 K
+ret   = 0
+
+=== +15 h =====================
+YYDDD = 2025127
+SOD   = 14814
+UTC   = 2025-05-07 04:06:54
+ρ_tot = 4.80809e-14 kg/m^3
+T_exo = 1049.12 K
+ret   = 0
+
+=== +16 h =====================
+YYDDD = 2025127
+SOD   = 18414
+UTC   = 2025-05-07 05:06:54
+ρ_tot = 5.18314e-14 kg/m^3
+T_exo = 1058.08 K
+ret   = 0
+
+=== +17 h =====================
+YYDDD = 2025127
+SOD   = 22014
+UTC   = 2025-05-07 06:06:54
+ρ_tot = 5.84886e-14 kg/m^3
+T_exo = 1070.93 K
+ret   = 0
+
+=== +18 h =====================
+YYDDD = 2025127
+SOD   = 25614
+UTC   = 2025-05-07 07:06:54
+ρ_tot = 6.88564e-14 kg/m^3
+T_exo = 1088.77 K
+ret   = 0
+
+=== +19 h =====================
+YYDDD = 2025127
+SOD   = 29214
+UTC   = 2025-05-07 08:06:54
+ρ_tot = 8.32641e-14 kg/m^3
+T_exo = 1110.98 K
+ret   = 0
+
+=== +20 h =====================
+YYDDD = 2025127
+SOD   = 32814
+UTC   = 2025-05-07 09:06:54
+ρ_tot = 1.00977e-13 kg/m^3
+T_exo = 1135.1 K
+ret   = 0
+
+=== +21 h =====================
+YYDDD = 2025127
+SOD   = 36414
+UTC   = 2025-05-07 10:06:54
+ρ_tot = 1.19981e-13 kg/m^3
+T_exo = 1158.1 K
+ret   = 0
+
+=== +22 h =====================
+YYDDD = 2025127
+SOD   = 40014
+UTC   = 2025-05-07 11:06:54
+ρ_tot = 1.37609e-13 kg/m^3
+T_exo = 1177.99 K
+ret   = 0
+
+=== +23 h =====================
+YYDDD = 2025127
+SOD   = 43614
+UTC   = 2025-05-07 12:06:54
+ρ_tot = 1.51745e-13 kg/m^3
+T_exo = 1194.75 K
+ret   = 0
+
+=== +24 h =====================
+YYDDD = 2025127
+SOD   = 47214
+UTC   = 2025-05-07 13:06:54
+ρ_tot = 1.61471e-13 kg/m^3
+T_exo = 1209.94 K
+ret   = 0
 

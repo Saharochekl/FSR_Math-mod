@@ -33,14 +33,14 @@ unzip -q "$TMPDIR/libf2c.zip" -d "$TMPDIR"
 cd "$TMPDIR/libf2c"
 
 echo "[libf2c] Building …"
-make -f makefile.u   # makefile.u = Unix Makefile in archive
+make -f $TMPDIR/libf2c/makefile.u   # makefile.u = Unix Makefile in archive
 
-if command -v ranlib >/dev/null; then
+if command -v $TMPDIR/libf2c/ranlib >/dev/null; then
   ranlib libf2c.a || true
 fi
 
 echo "[libf2c] Installing …"
-cp -f libf2c.a           "$PREFIX/lib/"
-cp -f f2c.h               "$PREFIX/include/"
+cp -f $TMPDIR/libf2c/libf2c.a           "$PREFIX/lib/"
+cp -f $TMPDIR/libf2c/f2c.h               "$PREFIX/include/"
 echo "[libf2c] installed."
 
