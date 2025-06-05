@@ -39,7 +39,7 @@ brew install qt@6            # или официальный installer
 
 # 2. libf2c
 chmod +x mini-mac-install.sh
-sudo sh Mac-install_libf2c.sh      # добавь sudo, если /usr/local не‑записываем
+sudo sh mini-mac-install.sh      # добавь sudo, если /usr/local не‑записываем
 
 #Скрипт скачивает архив libf2c.zip, собирает его c makefile.u и кладёт libf2c.a / f2c.h в /usr/local (Intel) или /opt/homebrew (Apple Silicon)
 
