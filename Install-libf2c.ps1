@@ -1,41 +1,48 @@
 <#
-.SYNOPSIS
-    Скачивает и собирает libf2c под Windows-MinGW и кладёт в выбранный PREFIX
-.EXAMPLE
-    PS> .\Install-libf2c.ps1 -Prefix "C:\dev\thirdparty\f2c"
+    Build-и-установи libf2c из папки, лежащей рядом со скриптом.
+    Пример:  .\build_libf2c.ps1  -Prefix  "C:\dev\thirdparty\f2c"  -Toolchain mingw
 #>
 
 param(
-    [string]$Prefix = "C:\local"
+    [string]$Prefix = "C:\local\f2c",
+    [ValidateSet("auto","mingw","msvc")]
+    [string]$Toolchain = "auto"
 )
 
-# ───── sanity checks ─────
-if (-not (Get-Command gcc  -ErrorAction SilentlyContinue)) { Write-Error "gcc (MinGW) not found" ; exit 1 }
-if (-not (Get-Command make -ErrorAction SilentlyContinue)) { Write-Error "make not found"        ; exit 1 }
+# ── исходники  -------------------------------------------------------
+$Here   = Split-Path -LiteralPath $MyInvocation.MyCommand.Path -Parent
+$SrcDir = Join-Path $Here 'libf2c'
+if (-not (Test-Path "$SrcDir\makefile.u")) {
+    Write-Error "Папка libf2c с исходниками не найдена рядом со скриптом."; exit 1
+}
 
-$Temp = New-Item -ItemType Directory -Path ([System.IO.Path]::GetTempPath()) -Name ("f2c_" + [guid]::NewGuid())
-Write-Host "[libf2c] Working dir: $Temp"
+# ── выбор toolchain  -------------------------------------------------
+function Has($cmd) { Get-Command $cmd -ErrorAction SilentlyContinue }
+if ($Toolchain -eq 'auto') {
+    $Toolchain = if (Has gcc  -and Has mingw32-make) { 'mingw' }
+                 elseif (Has cl -and Has nmake)      { 'msvc' }
+                 else { Write-Error "MinGW или MSVC не обнаружены."; exit 1 }
+}
+Write-Host "[libf2c] toolchain = $Toolchain"
 
-# ───── download and unpack ─────
-$Zip  = "$Temp\libf2c.zip"
-Invoke-WebRequest -Uri "https://www.netlib.org/f2c/libf2c.zip" -OutFile $Zip
-Expand-Archive -LiteralPath $Zip -DestinationPath $Temp
+switch ($Toolchain) {
+    'mingw' { $make = 'mingw32-make'; $libFile = 'libf2c.a';  $mf = 'makefile.mgc' }
+    'msvc'  { $make = 'nmake';        $libFile = 'libf2c.lib';$mf = 'makefile.msc' }
+}
 
-Push-Location "$Temp\libf2c"
-Write-Host "[libf2c] Building…"
-& make -f makefile.u
+# ── сборка  ----------------------------------------------------------
+Push-Location $SrcDir
+Copy-Item -Force $mf makefile            # подсовываем нужный makefile
+& $make hadd                             # C++-дружелюбный f2c.h
+& $make
+if (-not (Test-Path $libFile)) { Write-Error "Build failed."; exit 1 }
 
-# ranlib (optional for MinGW)
-if (Get-Command ranlib -ErrorAction SilentlyContinue) { & ranlib libf2c.a }
+# ── установка  -------------------------------------------------------
+$inc = Join-Path $Prefix 'include';  $lib = Join-Path $Prefix 'lib'
+$inc,$lib | ForEach-Object { if (-not (Test-Path $_)) { New-Item -ItemType Directory $_ | Out-Null } }
 
-# ───── install ─────
-$newInc = Join-Path $Prefix "include"
-$newLib = Join-Path $Prefix "lib"
-$newInc, $newLib | ForEach-Object { if (-not (Test-Path $_)) { New-Item -ItemType Directory -Path $_ | Out-Null } }
-
-Copy-Item -Force f2c.h    $newInc
-Copy-Item -Force libf2c.a $newLib
-Write-Host "[libf2c] Installed to $Prefix"
+Copy-Item -Force f2c.h      $inc
+Copy-Item -Force $libFile   $lib
+Write-Host "[libf2c] installed -> $Prefix"
 
 Pop-Location
-Remove-Item -Recurse -Force $Temp
