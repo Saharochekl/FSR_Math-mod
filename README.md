@@ -39,16 +39,8 @@ brew install qt@6            # или официальный installer
 
 # 2. libf2c
 chmod +x mini-mac-install.sh
-sudo sh mini-mac-install.sh      # добавь sudo, если /usr/local не‑записываем
-
-#Скрипт скачивает архив libf2c.zip, собирает его c makefile.u и кладёт libf2c.a / f2c.h в /usr/local (Intel) или /opt/homebrew (Apple Silicon)
-
-#Сборка
-
-cd Exp_Atm_Density
-qmake Exp_Atm_Density.pro    # или откройте проект в Qt Creator
-make -j$(sysctl -n hw.ncpu)
-open build/Exp_Atm_Density.app   # macOS‑Bundle
+sudo sh mini-mac-install.sh 
+#откройте проект в Qt Creator
 ```
 
 Использование
