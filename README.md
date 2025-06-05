@@ -38,42 +38,17 @@ cd FSR_Math-mod
 brew install qt@6            # или официальный installer
 
 # 2. libf2c
-chmod +x Mac-install_libf2c.sh
-./Mac-install_libf2c.sh      # добавь sudo, если /usr/local не‑записываем
+chmod +x mini-mac-install.sh
+sudo sh Mac-install_libf2c.sh      # добавь sudo, если /usr/local не‑записываем
 
 #Скрипт скачивает архив libf2c.zip, собирает его c makefile.u и кладёт libf2c.a / f2c.h в /usr/local (Intel) или /opt/homebrew (Apple Silicon)
 
 #Сборка
 
 cd Exp_Atm_Density
-qmake Exp_Atm_Density.pro    # или открой проект в Qt Creator
+qmake Exp_Atm_Density.pro    # или откройте проект в Qt Creator
 make -j$(sysctl -n hw.ncpu)
 open build/Exp_Atm_Density.app   # macOS‑Bundle
-```
-
-## Быстрый старт Windows 10/11
-
-
-Установите Qt 6 Desktop (комплект MinGW 64‑bit или MSVC 2022 64‑bit).
-
-Откройте PowerShell 7+ и выполните:
-
-```bash
-./Install-libf2c.ps1 -Prefix "C:\dev\thirdparty\f2c"
-```
-Скрипт скачает исходники, соберёт libf2c и скопирует файлы в <Prefix>\include, lib.
-
-В Qt Creator откройте FSR_Math-mod.pro, выберите комплект MinGW 64‑bit или MSVC 64‑bit, нажмите Build.
-
-Сборка из CLI:
-```bash
-REM MinGW
-qmake -r FSR_Math-mod.pro
-mingw32-make -j8
-
-REM MSVC (Developer Prompt)
-qmake -r -spec win32-msvc FSR_Math-mod.pro
-nmake
 ```
 
 Использование

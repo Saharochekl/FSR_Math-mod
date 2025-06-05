@@ -40,6 +40,20 @@ switch ($Toolchain) {
         $mf      = 'makefile.vc'
     }
 }
+# --- гарантируем, что mingw32-make и gcc найдутся -------------------
+if ($Toolchain -eq 'mingw') {
+    try   { $gccDir = (Get-Command gcc  -ErrorAction Stop).Path | Split-Path }
+    catch { Write-Error "gcc не найден в PATH"; exit 1 }
+
+    try   { $makeDir = (Get-Command mingw32-make -ErrorAction Stop).Path | Split-Path }
+    catch { $makeDir = $gccDir }   # mingw32-make обычно в том же bin
+
+    foreach ($d in @($gccDir,$makeDir)) {
+        if (-not ($Env:PATH -split ';' | Where-Object { $_ -ieq $d })) {
+            $Env:PATH = "$d;$Env:PATH"
+        }
+    }
+}
 
 # --------------------------------------------------------------------
 # 3.  Создаём lightweight-обёртки mv/cp/rm (только если их нет)
@@ -56,13 +70,41 @@ foreach ($f in $wrappers.Keys){
     $path = Join-Path $wrapDir $f
     if (-not (Test-Path $path)) { $wrappers[$f] -replace '\\r\\n',"`r`n" | Set-Content -Encoding ascii $path }
 }
-$env:PATH = "$wrapDir;$env:PATH"     # подсовываем в PATH прямо для этого процесса
+
+if (-not ($env:PATH -split ';' | Where-Object { $_ -ieq $wrapDir })) {
+    $env:PATH = "$wrapDir;$env:PATH"
+}    # подсовываем в PATH прямо для этого процесса
+
+$sysDir = Join-Path $SrcDir 'sys'
+if (-not (Test-Path $sysDir)) { New-Item $sysDir -ItemType Directory | Out-Null }
+
+$timesH = @'
+#ifndef _SYS_TIMES_H_
+#define _SYS_TIMES_H_
+#include <time.h>
+struct tms {
+    clock_t tms_utime;   /* user CPU time    */
+    clock_t tms_stime;   /* system CPU time  */
+    clock_t tms_cutime;  /* user children    */
+    clock_t tms_cstime;  /* system children  */
+};
+static inline clock_t times(struct tms *buf)
+{
+    clock_t c = clock();
+    if (buf) { buf->tms_utime = c; buf->tms_stime = 0;
+               buf->tms_cutime = buf->tms_cstime = 0; }
+    return c;
+}
+#endif
+'@
+Set-Content -Encoding ascii (Join-Path $sysDir 'times.h') -Value $timesH
 
 # --------------------------------------------------------------------
 # 4.  Ручной “hadd” (f2c.h, signal1.h, sysdep1.h)
 # --------------------------------------------------------------------
 Copy-Item -Force "$SrcDir\signal1.h0" "$SrcDir\signal1.h"
 Copy-Item -Force "$SrcDir\sysdep1.h0" "$SrcDir\sysdep1.h"
+Copy-Item -Force "$SrcDir\arith.h0"   "$SrcDir\arith.h"   
 Get-Content "$SrcDir\f2c.h0","$SrcDir\f2ch.add" | Set-Content "$SrcDir\f2c.h"
 
 # --------------------------------------------------------------------
