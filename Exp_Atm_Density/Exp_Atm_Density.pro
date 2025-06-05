@@ -31,12 +31,22 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-INCLUDEPATH += /usr/local/include
+unix: {
+    INCLUDEPATH += /usr/local/include
+    LIBS        += -L/usr/local/lib -lf2c -lm
+    # Default rules for deployment.
+    qnx: target.path = /tmp/$${TARGET}/bin
+    else: unix:!android: target.path = /opt/$${TARGET}/bin
+    !isEmpty(target.path): INSTALLS += target
+}
 
-LIBS += -L/usr/local/lib -lf2c -lm
+win32-g++ {                       # MinGW / MSYS2
+    INCLUDEPATH += $$PWD/thirdparty/f2c/include
+    LIBS        += -L$$PWD/thirdparty/f2c/lib -lf2c
+}
 
+win32-msvc {                      # MSVC toolchain
+    INCLUDEPATH += $$PWD\\thirdparty\\f2c\\include
+    LIBS        += $$PWD\\thirdparty\\f2c\\lib\\libf2c.lib
+}
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
