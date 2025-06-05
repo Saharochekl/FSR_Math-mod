@@ -51,6 +51,31 @@ make -j$(sysctl -n hw.ncpu)
 open build/Exp_Atm_Density.app   # macOS‑Bundle
 ```
 
+## Быстрый старт Windows 10/11
+
+
+Установите Qt 6 Desktop (комплект MinGW 64‑bit или MSVC 2022 64‑bit).
+
+Откройте PowerShell 7+ и выполните:
+
+```bash
+./Install-libf2c.ps1 -Prefix "C:\dev\thirdparty\f2c"
+```
+Скрипт скачает исходники, соберёт libf2c и скопирует файлы в <Prefix>\include, lib.
+
+В Qt Creator откройте FSR_Math-mod.pro, выберите комплект MinGW 64‑bit или MSVC 64‑bit, нажмите Build.
+
+Сборка из CLI:
+```bash
+REM MinGW
+qmake -r FSR_Math-mod.pro
+mingw32-make -j8
+
+REM MSVC (Developer Prompt)
+qmake -r -spec win32-msvc FSR_Math-mod.pro
+nmake
+```
+
 Использование
 Запусти Exp Atm Density.
 
@@ -67,6 +92,6 @@ Roadmap
 
  Графики ρ(h) и T(h) прямо в GUI
 
- CI‑сборки (GitHub Actions) под Windows и Linux
+ CI‑сборки (GitHub Actions) под Linux
 
 PR‑ы и issue‑репорты приветствуются! Перед коммитом прогоняйте clang-format.
